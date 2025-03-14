@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="create-customer-table" author="r.genzuras">
+        <createTable tableName="customer" ifNotExists="true">
+            <column name="ID" type="INT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="Name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="Surname" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="Email" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="create-item-table" author="r.genzuras">
+        <createTable tableName="item" ifNotExists="true">
+            <column name="ID" type="INT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="item_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_price" type="FLOAT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-order-table" author="r.genzuras">
+        <createTable tableName="orders" ifNotExists="true">
+            <column name="ID" type="INT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="purchasing_customer_id" type="INT"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="orders" baseColumnNames="purchasing_customer_id"
+                                 constraintName="customer.ID"
+                                 referencedTableName="customer"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <!-- this is fucking ass -->
+
+    <changeSet id="create-linking-table" author="r.genzuras">
+        <createTable tableName="order_purchased_items" ifNotExists="true">
+            <column name="order_id" type="INT"/>
+            <column name="purchased_items_id" type="INT"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="order_purchased_items" baseColumnNames="order_id" constraintName="order-id" referencedTableName="orders"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="order_purchased_items" baseColumnNames="purchased_items_id" constraintName="item-id"
+                                 referencedTableName="item"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="clear-data" author="r.genzuras">
+        <delete tableName="order_purchased_items"/>
+        <delete tableName="orders"/>
+        <delete tableName="customer"/>
+        <delete tableName="item"/>
+    </changeSet>
+
+    <changeSet id="enter-data" author="r.genzuras">
+        <loadData tableName="customer" file="customer.csv" relativeToChangelogFile="true" separator=";"/>
+        <loadData tableName="item" file="item.csv" relativeToChangelogFile="true" separator=";"/>
+    </changeSet>
+
+</databaseChangeLog>

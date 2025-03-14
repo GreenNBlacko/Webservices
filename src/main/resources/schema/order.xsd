@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+    <!-- Root element: Order -->
+    <xs:element name="order">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="ID" type="xs:int"/>
+                <xs:element name="Items" type="ItemsType"/>
+                <xs:element name="Customer" type="CustomerType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Customer definition -->
+    <xs:complexType name="CustomerType">
+        <xs:sequence>
+            <xs:element name="ID" type="xs:int"/>
+            <xs:element name="Name" type="xs:string"/>
+            <xs:element name="Surname" type="xs:string"/>
+            <xs:element name="Email" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Items container -->
+    <xs:complexType name="ItemsType">
+        <xs:sequence>
+            <xs:element name="Item" type="ItemType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Item definition -->
+    <xs:complexType name="ItemType">
+        <xs:sequence>
+            <xs:element name="ID" type="xs:int"/>
+            <xs:element name="Name" type="xs:string"/>
+            <xs:element name="Price" type="xs:float"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
