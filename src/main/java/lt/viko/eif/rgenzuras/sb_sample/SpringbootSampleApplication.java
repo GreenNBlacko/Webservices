@@ -1,15 +1,8 @@
 package lt.viko.eif.rgenzuras.sb_sample;
 
-import lt.viko.eif.rgenzuras.sb_sample.db.DatabaseContext;
-import lt.viko.eif.rgenzuras.sb_sample.programs.Application;
+import lt.viko.eif.rgenzuras.sb_sample.programs.soap.SOAPApplication;
 import lt.viko.eif.rgenzuras.sb_sample.programs.sockets.SocketApplication;
 import org.apache.commons.lang3.NotImplementedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -19,14 +12,8 @@ import java.util.Scanner;
  * @author ramunas.genzuras@stud.viko.lt
  * @see SocketApplication
  */
-@SpringBootApplication
-public class SpringbootSampleApplication implements CommandLineRunner {
-	@Autowired
-	private DatabaseContext ctx;
 
-	private final Logger Log = LoggerFactory
-			.getLogger(SpringbootSampleApplication.class);
-
+public class SpringbootSampleApplication {
 	private final PrintStream Console = System.out;
 
 	private final Scanner Scanner = new Scanner(System.in);
@@ -38,12 +25,15 @@ public class SpringbootSampleApplication implements CommandLineRunner {
 	 * @param args launch arguments
 	 */
 	public static void main(String[] args) {
-		SpringApplication.run(SpringbootSampleApplication.class, args);
-	}
+        try {
+            new SpringbootSampleApplication().run();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	@Override
-	public void run(String... args) throws Exception {
-		Log.info("Application is starting up...");
+	public void run() throws Exception {
+		Console.println("Application is starting up...");
 
 		var choice = -1;
 
@@ -61,28 +51,28 @@ public class SpringbootSampleApplication implements CommandLineRunner {
 
 			choice = Scanner.nextInt();
 
-			Application app = null;
-
 			switch (choice) {
 				case 1:
-					app = new SocketApplication(ctx);
+					SocketApplication.Run();
 					break;
 
 				case 2:
-					throw new NotImplementedException("SOAP endpoint not currently supported.");
+					new SOAPApplication().Run();
+					break;
 
 				case 3:
 					throw new NotImplementedException("REST endpoint not currently supported.");
 
-				default:
-					Log.warn("Option does not exist. Assuming exit selection...");
-					choice = 0;
-			}
+				case 0:
+					break;
 
-			if (app != null)
-				app.Run();
+				default:
+					Console.println("Option does not exist. Assuming exit selection...");
+					choice = 0;
+					break;
+			}
 		}
 
-		Log.info("Application has finished running");
+		Console.println("Application has finished running");
 	}
 }

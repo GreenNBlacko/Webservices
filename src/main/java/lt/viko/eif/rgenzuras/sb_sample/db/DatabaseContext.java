@@ -11,22 +11,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class DatabaseContext {
-	@Autowired
-	private CustomerRepository customerRepository;
+	private final CustomerRepository customerRepository;
 
-	@Autowired
-	private ItemRepository itemRepository;
+	private final ItemRepository itemRepository;
 
-	@Autowired
-	private OrderRepository orderRepository;
+	private final OrderRepository orderRepository;
 
 	private final PrintStream Console = System.out;
+
+	@Autowired
+	public DatabaseContext(CustomerRepository customerRepository, ItemRepository itemRepository, OrderRepository orderRepository) {
+		this.customerRepository = customerRepository;
+		this.itemRepository = itemRepository;
+		this.orderRepository = orderRepository;
+	}
 
 	public List<Order> ListOrders() {
 		return orderRepository.findAll();

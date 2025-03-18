@@ -65,13 +65,6 @@
                                  referencedColumnNames="id"/>
     </changeSet>
 
-    <changeSet id="clear-data" author="r.genzuras">
-        <delete tableName="order_purchased_items"/>
-        <delete tableName="orders"/>
-        <delete tableName="customer"/>
-        <delete tableName="item"/>
-    </changeSet>
-
     <changeSet id="enter-data" author="r.genzuras">
         <loadData tableName="customer" file="customer.csv" relativeToChangelogFile="true" separator=";"/>
         <loadData tableName="item" file="item.csv" relativeToChangelogFile="true" separator=";"/>
