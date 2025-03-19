@@ -10,7 +10,7 @@ import lt.viko.eif.rgenzuras.sb_sample.schema.Item;
 import java.util.List;
 
 @Service
-public class SOAPContext {
+public class WebContext {
     @Autowired
     private CustomerRepository customerRepository;
 

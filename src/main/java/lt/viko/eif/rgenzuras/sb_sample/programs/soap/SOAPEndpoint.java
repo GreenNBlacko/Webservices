@@ -1,6 +1,6 @@
 package lt.viko.eif.rgenzuras.sb_sample.programs.soap;
 
-import lt.viko.eif.rgenzuras.sb_sample.db.SOAPContext;
+import lt.viko.eif.rgenzuras.sb_sample.db.WebContext;
 import lt.viko.eif.rgenzuras.sb_sample.schema.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
@@ -13,7 +13,7 @@ public class SOAPEndpoint {
     private static final String NAMESPACE_URI = "http://schema.sb-sample.rgenzuras.eif.viko.lt";
 
     @Autowired
-    private SOAPContext context;
+    private WebContext context;
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getCustomerRequest")
     @ResponsePayload

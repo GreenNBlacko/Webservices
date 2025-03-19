@@ -1,8 +1,8 @@
 package lt.viko.eif.rgenzuras.sb_sample;
 
+import lt.viko.eif.rgenzuras.sb_sample.programs.rest.RESTApplication;
 import lt.viko.eif.rgenzuras.sb_sample.programs.soap.SOAPApplication;
 import lt.viko.eif.rgenzuras.sb_sample.programs.sockets.SocketApplication;
-import org.apache.commons.lang3.NotImplementedException;
 
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -61,7 +61,8 @@ public class SpringbootSampleApplication {
 					break;
 
 				case 3:
-					throw new NotImplementedException("REST endpoint not currently supported.");
+					new RESTApplication().Run();
+					break;
 
 				case 0:
 					break;
