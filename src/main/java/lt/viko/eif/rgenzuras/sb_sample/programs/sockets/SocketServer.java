@@ -1,12 +1,10 @@
 package lt.viko.eif.rgenzuras.sb_sample.programs.sockets;
 
-import jakarta.persistence.Tuple;
 import lt.viko.eif.rgenzuras.sb_sample.db.DatabaseContext;
 import lt.viko.eif.rgenzuras.sb_sample.programs.Application;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -20,7 +18,7 @@ import java.util.Scanner;
  * @see SocketClient
  */
 public class SocketServer implements Application {
-    private DatabaseContext ctx;
+    private final DatabaseContext ctx;
 
     public SocketServer(DatabaseContext ctx) {
         this.ctx = ctx;
@@ -33,9 +31,7 @@ public class SocketServer implements Application {
     private final java.util.Scanner Scanner = new Scanner(System.in);
 
     private ServerSocket server = null;
-    private ArrayList<Pair<Thread, ClientThread>> threads = new ArrayList<>();
-
-    private Thread shutdownHook;
+    private final ArrayList<Pair<Thread, ClientThread>> threads = new ArrayList<>();
 
     @Override
     public void Run() {
@@ -46,8 +42,15 @@ public class SocketServer implements Application {
             throw new RuntimeException(e);
         }
 
-        shutdownHook = new Thread(this::Close);
+        Thread shutdownHook = new Thread(this::Close);
         Runtime.getRuntime().addShutdownHook(shutdownHook);
+
+        var exitThread = new Thread(() -> {
+            Console.println("Press 0 to exit.");
+            while (!server.isClosed()) if(Scanner.nextInt() == 0) Close();
+        });
+
+        exitThread.start();
 
         while(!server.isClosed()) {
             try {
@@ -60,9 +63,7 @@ public class SocketServer implements Application {
                 thread.start();
 
                 threads.add(Pair.of(thread, app));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            } catch (IOException ignored) { }
         }
 
         Log.info("Server going offline! Goodbye world!");
@@ -70,11 +71,9 @@ public class SocketServer implements Application {
     }
 
     public void Close() {
-        for (int i = 0; i < threads.size(); i++) {
-            var thread = threads.get(i);
-
-            thread.getLeft().interrupt();
+        for (Pair<Thread, ClientThread> thread : threads) {
             thread.getRight().Close();
+            thread.getLeft().interrupt();
         }
 
 	    try {

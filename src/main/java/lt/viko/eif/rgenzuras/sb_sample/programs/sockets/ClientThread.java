@@ -1,7 +1,7 @@
 package lt.viko.eif.rgenzuras.sb_sample.programs.sockets;
 
 import lt.viko.eif.rgenzuras.sb_sample.db.DatabaseContext;
-import lt.viko.eif.rgenzuras.sb_sample.model.Order;
+import lt.viko.eif.rgenzuras.sb_sample.model.Customer;
 import lt.viko.eif.rgenzuras.sb_sample.model.Receipt;
 import lt.viko.eif.rgenzuras.sb_sample.programs.Application;
 import lt.viko.eif.rgenzuras.sb_sample.util.MarshallerXML;
@@ -24,13 +24,12 @@ import java.util.Scanner;
 public class ClientThread implements Application {
     private final Socket client;
 
-    private DatabaseContext ctx;
+    private final DatabaseContext ctx;
 
     private final Logger Log = LoggerFactory
             .getLogger(ClientThread.class);
 
     private final PrintStream Console = System.out;
-    private final java.util.Scanner Scanner = new Scanner(System.in);
 
     private final Scanner in;
     private final PrintWriter out;
@@ -61,7 +60,6 @@ public class ClientThread implements Application {
             // 1 - start transaction, 2 - view transaction history, 0 - disconnect
             var choice = in.nextInt();
             while (choice != 0) {
-                Console.println(choice);
                 switch (choice) {
                     case 1: // start transaction
                         HandleTransaction();
@@ -79,7 +77,15 @@ public class ClientThread implements Application {
             }
 
             Console.println("Client has disconnected! Connection closing...");
-        } catch (RuntimeException e) { throw new RuntimeException(e); }
+        } catch (RuntimeException e) {
+            try {
+                in.close();
+                out.close();
+                client.close();
+            } catch (IOException ex) {
+                Log.warn("Failed graceful shutdown of socket", ex);
+            }
+        }
     }
 
     private void HandleTransaction() {
@@ -87,8 +93,8 @@ public class ClientThread implements Application {
 
         var customersList = new ArrayList<String>();
 
-        for (int i = 0; i < customers.size(); i++) {
-            customersList.add(String.format("%s %s", customers.get(i).getName(), customers.get(i).getSurname()));
+        for (Customer value : customers) {
+            customersList.add(String.format("%s %s", value.getName(), value.getSurname()));
         }
 
         var selection = PaginatedMenu(customersList); // selecting the customer
@@ -108,8 +114,18 @@ public class ClientThread implements Application {
         Console.println("Order created");
 
         var items = ctx.ListItems();
+        int maxLength = 0;
 
-        var itemList = items.stream().map(item -> String.format("%s\t\t\t%f", item.getItemName(), item.getItemPrice())).toList();
+        for (var item : items) {
+            maxLength = Math.max(maxLength, item.getItemName().length() + 3);
+        }
+
+        int finalMaxLength = maxLength;
+        var itemList = items.stream().map(item -> {
+            var itemPrice = String.format("%.2f", item.getItemPrice());
+
+            return String.format("%s %s", item.getItemName(), itemPrice.indent(finalMaxLength - item.getItemName().length()));
+        }).toList();
         
         while(true) {
 
@@ -170,19 +186,21 @@ public class ClientThread implements Application {
         int page = 0;
         int pageCount = (int)Math.ceil((double)options.size() / itemsPerPage);
 
-        int selection = 10;
-
         while(true) {
+            int selection = 10;
+
             String output = "";
 
             if(options.size() > itemsPerPage)
                 output += String.format("Page %d / %d\n", page + 1, pageCount);
 
-            for (int i = page * pageCount; i < options.size() && i < (page + 1) * itemsPerPage; i++) {
+            StringBuilder outputBuilder = new StringBuilder(output);
+            for (int i = page * itemsPerPage; (i < options.size()) && (i < ((page + 1) * itemsPerPage)); i++) {
                 int label = i % itemsPerPage;
 
-                output += String.format("[%d] %s\n", label + 1, options.get(i));
+                outputBuilder.append(String.format("[%d] %s\n", label + 1, options.get(i)));
             }
+            output = outputBuilder.toString();
 
             if(page > 0)
                 output += "[8] Previous page\n";
@@ -192,12 +210,11 @@ public class ClientThread implements Application {
 
             output += "[0] " + CancelMessage;
 
+            output = output.replace("\n\n", "\n");
             out.println(output.replace('\n', '~'));
 
             while(selection < 0 || selection > 9)
                 selection = in.nextInt();
-
-            Console.println(selection);
 
             switch (selection) {
                 case 0:

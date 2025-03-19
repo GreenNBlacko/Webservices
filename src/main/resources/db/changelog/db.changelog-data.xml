@@ -46,7 +46,7 @@
         <addForeignKeyConstraint baseTableName="orders" baseColumnNames="purchasing_customer_id"
                                  constraintName="customer.ID"
                                  referencedTableName="customer"
-                                 referencedColumnNames="id"/>
+                                 referencedColumnNames="id" onDelete="CASCADE"/>
     </changeSet>
 
     <!-- this is fucking ass -->
@@ -58,11 +58,11 @@
         </createTable>
 
         <addForeignKeyConstraint baseTableName="order_purchased_items" baseColumnNames="order_id" constraintName="order-id" referencedTableName="orders"
-                                 referencedColumnNames="id"/>
+                                 referencedColumnNames="id" onDelete="CASCADE"/>
 
         <addForeignKeyConstraint baseTableName="order_purchased_items" baseColumnNames="purchased_items_id" constraintName="item-id"
                                  referencedTableName="item"
-                                 referencedColumnNames="id"/>
+                                 referencedColumnNames="id" onDelete="CASCADE"/>
     </changeSet>
 
     <changeSet id="enter-data" author="r.genzuras">
