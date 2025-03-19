@@ -34,13 +34,12 @@ public class MarshallerXML implements Marshaller {
 
         try {
             StringWriter writer = new StringWriter();
-            var context = JAXBContext.newInstance(new Class[]{object.getClass(), Data.getClass()});
+            var context = JAXBContext.newInstance(object.getClass(), Data.getClass());
             var marshaller = context.createMarshaller();
             marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT, prettyPrint);
             marshaller.marshal(object, writer);
             return writer.toString();
-        } catch (JAXBException e) {
-            e.printStackTrace();
+        } catch (JAXBException ignored) {
             return null;
         }
     }
@@ -51,8 +50,7 @@ public class MarshallerXML implements Marshaller {
             var context = JAXBContext.newInstance(objectClass);
             var unmarshaller = context.createUnmarshaller();
             return (T) unmarshaller.unmarshal(new StringReader(xml));
-        } catch (JAXBException e) {
-            e.printStackTrace();
+        } catch (JAXBException ignored) {
             return null;
         }
     }
