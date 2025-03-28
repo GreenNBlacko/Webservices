@@ -1,10 +1,15 @@
 package lt.viko.eif.rgenzuras.sb_sample;
 
-import lt.viko.eif.rgenzuras.sb_sample.programs.rest.RESTApplication;
-import lt.viko.eif.rgenzuras.sb_sample.programs.soap.SOAPApplication;
+import lt.viko.eif.rgenzuras.sb_sample.programs.rest.RESTServer;
+import lt.viko.eif.rgenzuras.sb_sample.programs.soap.SOAPClient;
+import lt.viko.eif.rgenzuras.sb_sample.programs.soap.SOAPServer;
 import lt.viko.eif.rgenzuras.sb_sample.programs.sockets.SocketApplication;
+import lt.viko.eif.rgenzuras.sb_sample.util.ListSelection;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -18,7 +23,7 @@ public class SpringbootSampleApplication {
 
 	private final Scanner Scanner = new Scanner(System.in);
 
-	private final String[] Choices = {"Socket application", "SOAP endpoint", "REST endpoint"};
+	private final List<String> Choices = List.of(new String[]{"Socket application", "SOAP endpoint", "SOAP client", "REST endpoint"});
 
 	/**
 	 * Entry point for the program
@@ -37,19 +42,12 @@ public class SpringbootSampleApplication {
 
 		var choice = -1;
 
+		Console.println(new ClassPathResource("banner.txt").getContentAsString(StandardCharsets.UTF_8));
 		Console.println("Welcome!");
 		while (choice != 0) {
 			Console.println("Please select the program you wish to run");
 
-			for (int i = 0; i < Choices.length; i++) {
-				Console.printf("[%d] %s%n", i + 1, Choices[i]);
-			}
-
-			Console.println("[0] Exit");
-
-			Console.print("Your choice: ");
-
-			choice = Scanner.nextInt();
+			choice = ListSelection.DisplaySelection(Choices, "Exit");
 
 			switch (choice) {
 				case 1:
@@ -57,11 +55,15 @@ public class SpringbootSampleApplication {
 					break;
 
 				case 2:
-					new SOAPApplication().Run();
+					new SOAPServer().Run();
 					break;
 
 				case 3:
-					new RESTApplication().Run();
+					new SOAPClient().Run();
+					break;
+
+				case 4:
+					new RESTServer().Run();
 					break;
 
 				case 0:

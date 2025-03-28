@@ -131,13 +131,10 @@ public class ClientThread implements Application {
 
             selection = PaginatedMenu(itemList, "End transaction");
 
-            Console.println("Order selection: " + selection);
-
             if(selection == -1)
                 break;
 
             order.getPurchasedItems().add(items.get(selection));
-            Console.printf("Added %s to the order #%d", items.get(selection).getItemName(), order.getID());
         }
 
         ctx.UpdateOrder(order);

@@ -1,4 +1,4 @@
-package lt.viko.eif.rgenzuras.sb_sample.programs.rest;
+package lt.viko.eif.rgenzuras.sb_sample.programs.soap;
 
 import lt.viko.eif.rgenzuras.sb_sample.programs.Application;
 import org.springframework.boot.SpringApplication;
@@ -14,9 +14,9 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
 @EntityScan(basePackages = {"lt.viko.eif.rgenzuras.sb_sample.model", "lt.viko.eif.rgenzuras.sb_sample.schema"})
-@SpringBootApplication(scanBasePackages = {"lt.viko.eif.rgenzuras.sb_sample.db", "lt.viko.eif.rgenzuras.sb_sample.util", "lt.viko.eif.rgenzuras.sb_sample.programs.rest"})
+@SpringBootApplication(scanBasePackages = {"lt.viko.eif.rgenzuras.sb_sample.db", "lt.viko.eif.rgenzuras.sb_sample.util", "lt.viko.eif.rgenzuras.sb_sample.programs.soap"})
 @EnableJpaRepositories(basePackages = "lt.viko.eif.rgenzuras.sb_sample.db.repositories")
-public class RESTApplication implements Application {
+public class SOAPServer implements Application {
     private final PrintStream Console = System.out;
     private final Scanner Scanner = new Scanner(System.in);
 
@@ -24,13 +24,13 @@ public class RESTApplication implements Application {
 
     @Override
     public void Run() {
-        Console.println("Starting REST application...");
+        Console.println("Starting SOAP application...");
 
         AtomicReference<ApplicationContext> context = new AtomicReference<>();
 
         var thread = new Thread(() -> {
-            var application = new SpringApplication(RESTApplication.class);
-            application.setWebApplicationType(WebApplicationType.REACTIVE);
+            var application = new SpringApplication(SOAPServer.class);
+            application.setWebApplicationType(WebApplicationType.SERVLET);
             context.set(application.run());
 
             latch.countDown();
@@ -42,11 +42,11 @@ public class RESTApplication implements Application {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        Console.println("REST application started successfully.");
+        Console.println("SOAP application started successfully.");
         Console.println("Press 0 to exit.");
 
         while (true) if (Scanner.nextInt() == 0) break;
-        Console.println("REST application exiting... Goodbye, world!");
+        Console.println("SOAP application exiting... Goodbye, world!");
         SpringApplication.exit(context.get(), () -> 0);
     }
 }

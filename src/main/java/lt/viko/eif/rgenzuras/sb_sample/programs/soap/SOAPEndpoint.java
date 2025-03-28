@@ -37,8 +37,8 @@ public class SOAPEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "addCustomerRequest")
     @ResponsePayload
-    public ModifyResponse addCustomer(@RequestPayload AddCustomerRequest request) {
-        var response = new ModifyResponse();
+    public AddCustomerResponse addCustomer(@RequestPayload AddCustomerRequest request) {
+        var response = new AddCustomerResponse();
 
         var customer = request.getCustomer();
 
@@ -55,8 +55,8 @@ public class SOAPEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "addItemRequest")
     @ResponsePayload
-    public ModifyResponse addItem(@RequestPayload AddItemRequest request) {
-        var response = new ModifyResponse();
+    public AddItemResponse addItem(@RequestPayload AddItemRequest request) {
+        var response = new AddItemResponse();
 
         var item = request.getItem();
 
@@ -73,8 +73,8 @@ public class SOAPEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "removeCustomerRequest")
     @ResponsePayload
-    public ModifyResponse removeCustomer(@RequestPayload RemoveCustomerRequest request) {
-        var response = new ModifyResponse();
+    public RemoveCustomerResponse removeCustomer(@RequestPayload RemoveCustomerRequest request) {
+        var response = new RemoveCustomerResponse();
 
         try {
             context.deleteCustomer(request.getID());
@@ -89,8 +89,8 @@ public class SOAPEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "removeItemRequest")
     @ResponsePayload
-    public ModifyResponse removeItem(@RequestPayload RemoveItemRequest request) {
-        var response = new ModifyResponse();
+    public RemoveItemResponse removeItem(@RequestPayload RemoveItemRequest request) {
+        var response = new RemoveItemResponse();
 
         try {
             context.deleteItem(request.getID());

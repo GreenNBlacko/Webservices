@@ -6,5 +6,5 @@ package lt.viko.eif.rgenzuras.sb_sample.util;
  * @author ramunas.genzuras@stud.viko.lt
  */
 public interface Transformer {
-    String Tranform(String xml);
+    String Transform(String xml, String transformationSchemaPath) throws Exception;
 }

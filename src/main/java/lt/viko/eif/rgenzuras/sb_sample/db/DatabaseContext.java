@@ -55,4 +55,9 @@ public class DatabaseContext {
 	public void UpdateOrder(Order order) {
 		orderRepository.save(order);
 	}
+
+	@Transactional
+	public void DeleteOrder(Order order) {
+		orderRepository.delete(order);
+	}
 }
