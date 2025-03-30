@@ -40,6 +40,7 @@ public class SOAPClient implements Application {
                 case 1:
                     switch (operationSelection) {
                         case 1:
+                            Scanner.reset();
                             Console.print("Enter the ID of the item you wish to get: ");
                             int getID = Scanner.nextInt();
                             var getItemRequest = new GetItemRequest();
@@ -50,8 +51,11 @@ public class SOAPClient implements Application {
                             break;
 
                         case 2:
+                            Scanner.reset();
                             Console.print("Enter the new item's name: ");
                             var name = Scanner.nextLine();
+
+                            Scanner.reset();
                             Console.print("Enter the new item's price: ");
                             var price = Scanner.nextFloat();
 
@@ -68,7 +72,8 @@ public class SOAPClient implements Application {
                             break;
 
                         case 3:
-                            Console.print("Enter the ID of the item you wish to get: ");
+                            Scanner.reset();
+                            Console.print("Enter the ID of the item you wish to remove: ");
                             int removeID = Scanner.nextInt();
                             var removeItemRequest = new RemoveItemRequest();
                             removeItemRequest.setID(removeID);
@@ -86,6 +91,7 @@ public class SOAPClient implements Application {
                 case 2:
                     switch (operationSelection) {
                         case 1:
+                            Scanner.reset();
                             Console.print("Enter the ID of the customer you wish to get: ");
                             int getID = Scanner.nextInt();
 
@@ -98,31 +104,40 @@ public class SOAPClient implements Application {
                             break;
 
                         case 2:
+                            Scanner.reset();
                             Console.print("Enter the new customer's name: ");
                             var name = Scanner.nextLine();
-                            Console.print("Enter the new customer's price: ");
-                            var price = Scanner.nextFloat();
 
-                            var addItemRequest = new AddItemRequest();
-                            var addItem = new Item();
+                            Scanner.reset();
+                            Console.print("Enter the new customer's surname: ");
+                            var surname = Scanner.nextLine();
 
-                            addItem.setName(name);
-                            addItem.setPrice(price);
+                            Scanner.reset();
+                            Console.print("Enter the new customer's email: ");
+                            var email = Scanner.nextLine();
 
-                            addItemRequest.setItem(addItem);
+                            var addCustomerRequest = new AddCustomerRequest();
+                            var addCustomer = new Customer();
 
-                            var addItemResponse = client.addItem(addItemRequest);
-                            xml = marshaller.Marshal(addItemResponse, true);
+                            addCustomer.setName(name);
+                            addCustomer.setSurname(surname);
+                            addCustomer.setEmail(email);
+
+                            addCustomerRequest.setCustomer(addCustomer);
+
+                            var addCustomerResponse = client.addCustomer(addCustomerRequest);
+                            xml = marshaller.Marshal(addCustomerResponse, true);
                             break;
 
                         case 3:
-                            Console.print("Enter the ID of the item you wish to get: ");
+                            Scanner.reset();
+                            Console.print("Enter the ID of the customer you wish to remove: ");
                             int removeID = Scanner.nextInt();
-                            var removeItemRequest = new RemoveItemRequest();
-                            removeItemRequest.setID(removeID);
+                            var removeCustomerRequest = new RemoveCustomerRequest();
+                            removeCustomerRequest.setID(removeID);
 
-                            var removeItemResponse = client.removeItem(removeItemRequest);
-                            xml = marshaller.Marshal(removeItemResponse, true);
+                            var removeCustomerResponse = client.removeCustomer(removeCustomerRequest);
+                            xml = marshaller.Marshal(removeCustomerResponse, true);
                             break;
 
                         default:
