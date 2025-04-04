@@ -6,25 +6,73 @@
     <xsl:template match="/">
         <html>
             <head>
-                <META http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-                <title>Get customer</title>
+                <title>Customer Details</title>
+                <style>
+                    body {
+                    font-family: Arial, sans-serif;
+                    background-color: #f8f9fa;
+                    color: #212529;
+                    padding: 2rem;
+                    }
+
+                    .card {
+                    background-color: white;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                    padding: 2rem;
+                    max-width: 600px;
+                    margin: 0 auto;
+                    }
+
+                    .card h1 {
+                    margin-top: 0;
+                    font-size: 1.75rem;
+                    color: #007bff;
+                    }
+
+                    .field {
+                    margin-bottom: 1rem;
+                    display: flex;
+                    justify-content: space-between;
+                    border-bottom: 1px solid #e0e0e0;
+                    padding-bottom: 0.5rem;
+                    }
+
+                    .label {
+                    font-weight: bold;
+                    color: #555;
+                    }
+
+                    .value {
+                    text-align: right;
+                    color: #333;
+                    }
+                </style>
             </head>
             <body>
-                <h1>Customer Details</h1>
-                <table border="1">
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Surname</th>
-                        <th>Email</th>
-                    </tr>
-                    <tr>
-                        <td><xsl:value-of select="//ns2:customer/ns2:ID"/></td>
-                        <td><xsl:value-of select="//ns2:customer/ns2:Name"/></td>
-                        <td><xsl:value-of select="//ns2:customer/ns2:Surname"/></td>
-                        <td><xsl:value-of select="//ns2:customer/ns2:Email"/></td>
-                    </tr>
-                </table>
+                <div class="card">
+                    <h1>Customer Details</h1>
+
+                    <div class="field">
+                        <div class="label">ID:</div>
+                        <div class="value"><xsl:value-of select="//ns2:customer/ns2:ID"/></div>
+                    </div>
+
+                    <div class="field">
+                        <div class="label">Name:</div>
+                        <div class="value"><xsl:value-of select="//ns2:customer/ns2:Name"/></div>
+                    </div>
+
+                    <div class="field">
+                        <div class="label">Surname:</div>
+                        <div class="value"><xsl:value-of select="//ns2:customer/ns2:Surname"/></div>
+                    </div>
+
+                    <div class="field">
+                        <div class="label">Email:</div>
+                        <div class="value"><xsl:value-of select="//ns2:customer/ns2:Email"/></div>
+                    </div>
+                </div>
             </body>
         </html>
     </xsl:template>
