@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fop version="1.0">
-    <renderers>
-        <renderer mime="application/pdf">
-            <driver xsl="true"/>
-        </renderer>
-    </renderers>
+  <renderers>
+    <renderer mime="application/pdf"/>
+  </renderers>
+
+  <fonts>
+    <auto-detect/>
+  </fonts>
 </fop>

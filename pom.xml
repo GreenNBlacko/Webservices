@@ -10,9 +10,9 @@
     </parent>
     <groupId>lt.viko.eif.rgenzuras</groupId>
     <artifactId>springboot-sample</artifactId>
-    <version>0.7-ALPHA</version>
+    <version>0.9-ALPHA</version>
     <name>springboot-sample</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Sample springboot application for managing a store</description>
     <properties>
         <java.version>17</java.version>
     </properties>
