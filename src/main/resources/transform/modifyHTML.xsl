@@ -10,43 +10,43 @@
                 <title>Modification Result</title>
                 <style>
                     body {
-                    font-family: Arial, sans-serif;
-                    background-color: #f8f9fa;
-                    color: #212529;
-                    padding: 2rem;
+                        font-family: Arial, sans-serif;
+                        background-color: #f8f9fa;
+                        color: #212529;
+                        padding: 2rem;
                     }
 
                     .card {
-                    background-color: white;
-                    border-radius: 8px;
-                    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-                    padding: 2rem;
-                    max-width: 600px;
-                    margin: 0 auto;
+                        background-color: white;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                        padding: 2rem;
+                        max-width: 600px;
+                        margin: 0 auto;
                     }
 
                     .card h1 {
-                    margin-top: 0;
-                    font-size: 1.75rem;
-                    color: #007bff;
+                        margin-top: 0;
+                        font-size: 1.75rem;
+                        color: #007bff;
                     }
 
                     .field {
-                    margin-bottom: 1rem;
-                    display: flex;
-                    justify-content: space-between;
-                    border-bottom: 1px solid #e0e0e0;
-                    padding-bottom: 0.5rem;
+                        margin-bottom: 1rem;
+                        display: flex;
+                        justify-content: space-between;
+                        border-bottom: 1px solid #e0e0e0;
+                        padding-bottom: 0.5rem;
                     }
 
                     .label {
-                    font-weight: bold;
-                    color: #555;
+                        font-weight: bold;
+                        color: #555;
                     }
 
                     .value {
-                    text-align: right;
-                    color: #333;
+                        text-align: right;
+                        color: #333;
                     }
                 </style>
             </head>

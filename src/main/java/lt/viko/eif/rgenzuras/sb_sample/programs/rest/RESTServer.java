@@ -30,7 +30,7 @@ public class RESTServer implements Application {
 
         var thread = new Thread(() -> {
             var application = new SpringApplication(RESTServer.class);
-            application.setWebApplicationType(WebApplicationType.REACTIVE);
+            application.setWebApplicationType(WebApplicationType.SERVLET);
             context.set(application.run());
 
             latch.countDown();
