@@ -4,6 +4,8 @@ import lt.viko.eif.rgenzuras.sb_sample.db.mappers.CustomerMapper;
 import lt.viko.eif.rgenzuras.sb_sample.db.mappers.ItemMapper;
 import lt.viko.eif.rgenzuras.sb_sample.db.repositories.CustomerRepository;
 import lt.viko.eif.rgenzuras.sb_sample.db.repositories.ItemRepository;
+import lt.viko.eif.rgenzuras.sb_sample.model.rest.CustomerAddRequest;
+import lt.viko.eif.rgenzuras.sb_sample.model.rest.ItemAddRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import lt.viko.eif.rgenzuras.sb_sample.schema.Customer;
@@ -38,6 +40,15 @@ public class WebContext {
         return new Customer();
     }
 
+    public Customer addCustomer(CustomerAddRequest customer) {
+        var newCustomer = new lt.viko.eif.rgenzuras.sb_sample.model.Customer();
+        newCustomer.setName(customer.getName());
+        newCustomer.setSurname(customer.getSurname());
+        newCustomer.setEmail(customer.getEmail());
+
+        return customerMapper.toDTO(customerRepository.save(newCustomer));
+    }
+
     public void saveCustomer(Customer customer) {
         customerRepository.save(customerMapper.toModel(customer));
     }
@@ -56,6 +67,13 @@ public class WebContext {
         }
 
         return new Item();
+    }
+
+    public Item addItem(ItemAddRequest item) {
+        var newItem = new lt.viko.eif.rgenzuras.sb_sample.model.Item();
+        newItem.setItemName(item.getName());
+        newItem.setItemPrice(item.getPrice());
+        return itemMapper.toDTO(itemRepository.save(newItem));
     }
 
     public void saveItem(Item item) {

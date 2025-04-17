@@ -10,7 +10,7 @@
     </parent>
     <groupId>lt.viko.eif.rgenzuras</groupId>
     <artifactId>springboot-sample</artifactId>
-    <version>0.9-ALPHA</version>
+    <version>1.0-RELEASE</version>
     <name>springboot-sample</name>
     <description>Sample springboot application for managing a store</description>
     <properties>
@@ -47,6 +47,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web-services</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-hateoas</artifactId>
+        </dependency>
+
         <!-- tag::springws[] -->
         <dependency>
             <groupId>wsdl4j</groupId>
