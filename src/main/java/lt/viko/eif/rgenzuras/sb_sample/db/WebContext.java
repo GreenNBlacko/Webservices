@@ -37,7 +37,7 @@ public class WebContext {
             if (customer.getID() == id) return customer;
         }
 
-        return new Customer();
+        return null;
     }
 
     public Customer addCustomer(CustomerAddRequest customer) {
@@ -53,8 +53,12 @@ public class WebContext {
         customerRepository.save(customerMapper.toModel(customer));
     }
 
-    public void deleteCustomer(int id) {
+    public boolean deleteCustomer(int id) {
+        if(!customerRepository.existsById(id))
+            return false;
+
         customerRepository.deleteById(id);
+        return true;
     }
 
     public List<Item> getItems() {
@@ -66,7 +70,7 @@ public class WebContext {
             if (item.getID() == id) return item;
         }
 
-        return new Item();
+        return null;
     }
 
     public Item addItem(ItemAddRequest item) {
@@ -80,7 +84,11 @@ public class WebContext {
         itemRepository.save(itemMapper.toModel(item));
     }
 
-    public void deleteItem(int id) {
+    public boolean deleteItem(int id) {
+        if(!itemRepository.existsById(id))
+            return false;
+
         itemRepository.deleteById(id);
+        return true;
     }
 }
